@@ -63,7 +63,7 @@ Proto se velmi vyplatí převést projekt na Maven a používat na veškerou man
 Je vcelku jednoduchý a přímočarý. Jediný "problém" je nejspíš (alespoň pro Javu) v nalezení dobrého klienta. Možností je několik:
 
 1. [Unirest](http://unirest.io/java.html)
-	* Vypadá z nich asi nejlépe - nádherný deklarativní styl a vše potřebné. Používá ovšem knihovnu `Apache HTTPComponents`, která koliduje s CXF... Jojo, tak to bývá :(.
+	* Vypadá z nich asi nejlépe - nádherný deklarativní styl a vše potřebné. Používá ovšem knihovnu `Apache HTTPComponents`, která koliduje s CXF a to tak, že absolutně nesmiřitelně! Jojo, tak to bývá :(.
 2. [Restfulie](https://github.com/caelum/restfulie-java)
 	* Nějaké takové trochu divné (špatná dokumentace), ale dá se a po Unirestu je to asi druhá volba, přestože nemá tolik možností...
 3. [http-rest-client](https://github.com/g00dnatur3/http-rest-client)
@@ -87,12 +87,12 @@ Používá-li člověk spousty externích knihoven (nebo kupříkladu jen dvě v
 
 Jinými slovy, je-li nějaká knihovna vyžadována několikrát v různých verzích... Noční můra pro všechny, kteří mají podivné problémy a nejsou schopni je vygooglit nebo vyřešit.
 
-Vzbudíte-li se i vy do noční můry, možná vám světlým bodem na obzoru následující:
+Vzbudíte-li se i vy do noční můry, možná vám bude světlým bodem na obzoru následující:
 <http://www.javaworld.com/article/2077837/java-se/hello--osgi--part-1--bundles-for-beginners.html>
 
 ### Různé logovací systémy
 
-Jednou je "hardkódován" standardní logovací modul Javy, podruhé se spoléhá na SLF4J a do třetice všeho ukecávajícího je nám servírován LOG4J. A to vše, prosím, v různých verzích! Jinak je to přece o ničem. :+1: 
+Jednou je "hardkódován" standardní logovací modul Javy, podruhé se spoléhá na SLF4J a do třetice všeho ukecávajícího je nám servírován Log4j. A pokud možno, v různých verzích, prosím... jinak je přece život o ničem! :+1: 
 
 ## Užitečné poznámky a odkazy
 
