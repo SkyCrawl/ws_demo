@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="AuthorityService" targetNamespace="http://wsdemo.skycrawl.org" xmlns:ns1="http://jaxb.dev.java.net/array" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://wsdemo.skycrawl.org" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<schema xmlns="http://www.w3.org/2001/XMLSchema">
+  <import namespace="http://wsdemo.skycrawl.org" schemaLocation="authorityservice_schema1.xsd"/>
+  <import namespace="http://jaxb.dev.java.net/array" schemaLocation="authorityservice_schema2.xsd"/>
+</schema>
+  </wsdl:types>
+  <wsdl:message name="RegisterResponse">
+    <wsdl:part name="NotRegistered" type="tns:registerResult">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetDomains">
+    <wsdl:part name="rootID" type="xsd:string">
+    </wsdl:part>
+    <wsdl:part name="tld" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="Register">
+    <wsdl:part name="sites" type="ns1:stringArray">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetAuthorityResponse">
+    <wsdl:part name="Authority" type="tns:certificate">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetTLDStats">
+    <wsdl:part name="tld" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="TLDNotRegisteredException">
+    <wsdl:part name="TLDNotRegisteredException" element="tns:TLDNotRegisteredException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetDomainsResponse">
+    <wsdl:part name="Domains" type="ns1:stringArray">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="IncorrectArgumentException">
+    <wsdl:part name="IncorrectArgumentException" element="tns:IncorrectArgumentException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetTLDStatsResponse">
+    <wsdl:part name="TLDStats" type="tns:statsResult">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="MalformedURLException">
+    <wsdl:part name="MalformedURLException" element="tns:MalformedURLException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SiteNotRegisteredException">
+    <wsdl:part name="SiteNotRegisteredException" element="tns:SiteNotRegisteredException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetAuthority">
+    <wsdl:part name="site" type="xsd:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="AuthorityService">
+<wsdl:documentation>A simple service to map internet domains to associated root certificate authorities and retrieve some related statistics.</wsdl:documentation>
+    <wsdl:operation name="Register">
+<wsdl:documentation>Operation to register sites to the system.</wsdl:documentation>
+      <wsdl:input name="Register" message="tns:Register">
+    </wsdl:input>
+      <wsdl:output name="RegisterResponse" message="tns:RegisterResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDomains">
+<wsdl:documentation>Operation to retrieve all registered domains for the given authority and top-level domain.</wsdl:documentation>
+      <wsdl:input name="GetDomains" message="tns:GetDomains">
+    </wsdl:input>
+      <wsdl:output name="GetDomainsResponse" message="tns:GetDomainsResponse">
+    </wsdl:output>
+      <wsdl:fault name="IncorrectArgumentException" message="tns:IncorrectArgumentException">
+    </wsdl:fault>
+      <wsdl:fault name="TLDNotRegisteredException" message="tns:TLDNotRegisteredException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthority">
+<wsdl:documentation>Operation to retrieve root certificate authority for the given registered site/domain.</wsdl:documentation>
+      <wsdl:input name="GetAuthority" message="tns:GetAuthority">
+    </wsdl:input>
+      <wsdl:output name="GetAuthorityResponse" message="tns:GetAuthorityResponse">
+    </wsdl:output>
+      <wsdl:fault name="MalformedURLException" message="tns:MalformedURLException">
+    </wsdl:fault>
+      <wsdl:fault name="SiteNotRegisteredException" message="tns:SiteNotRegisteredException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetTLDStats">
+<wsdl:documentation>Operation to retrieve all registered root certificate authorities for the given top-level domain. The count of registered domains will also be returned for each authority.</wsdl:documentation>
+      <wsdl:input name="GetTLDStats" message="tns:GetTLDStats">
+    </wsdl:input>
+      <wsdl:output name="GetTLDStatsResponse" message="tns:GetTLDStatsResponse">
+    </wsdl:output>
+      <wsdl:fault name="IncorrectArgumentException" message="tns:IncorrectArgumentException">
+    </wsdl:fault>
+      <wsdl:fault name="TLDNotRegisteredException" message="tns:TLDNotRegisteredException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AuthorityServiceSoapBinding" type="tns:AuthorityService">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Register">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="Register">
+        <soap:body use="literal" namespace="http://wsdemo.skycrawl.org"/>
+      </wsdl:input>
+      <wsdl:output name="RegisterResponse">
+        <soap:body use="literal" namespace="http://wsdemo.skycrawl.org"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDomains">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="GetDomains">
+        <soap:body use="literal" namespace="http://wsdemo.skycrawl.org"/>
+      </wsdl:input>
+      <wsdl:output name="GetDomainsResponse">
+        <soap:body use="literal" namespace="http://wsdemo.skycrawl.org"/>
+      </wsdl:output>
+      <wsdl:fault name="IncorrectArgumentException">
+        <soap:fault name="IncorrectArgumentException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="TLDNotRegisteredException">
+        <soap:fault name="TLDNotRegisteredException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthority">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="GetAuthority">
+        <soap:body use="literal" namespace="http://wsdemo.skycrawl.org"/>
+      </wsdl:input>
+      <wsdl:output name="GetAuthorityResponse">
+        <soap:body use="literal" namespace="http://wsdemo.skycrawl.org"/>
+      </wsdl:output>
+      <wsdl:fault name="MalformedURLException">
+        <soap:fault name="MalformedURLException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="SiteNotRegisteredException">
+        <soap:fault name="SiteNotRegisteredException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetTLDStats">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="GetTLDStats">
+        <soap:body use="literal" namespace="http://wsdemo.skycrawl.org"/>
+      </wsdl:input>
+      <wsdl:output name="GetTLDStatsResponse">
+        <soap:body use="literal" namespace="http://wsdemo.skycrawl.org"/>
+      </wsdl:output>
+      <wsdl:fault name="IncorrectArgumentException">
+        <soap:fault name="IncorrectArgumentException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="TLDNotRegisteredException">
+        <soap:fault name="TLDNotRegisteredException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AuthorityService">
+    <wsdl:port name="AuthorityServicePort" binding="tns:AuthorityServiceSoapBinding">
+      <soap:address location="http://localhost:8080/ws_demo/services/AuthorityServicePort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

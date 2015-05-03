@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?><xs:schema xmlns:tns="http://wsdemo.skycrawl.org" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://wsdemo.skycrawl.org">
+  <xs:element name="certificate" type="tns:certificate"/>
+  <xs:element name="registerResult" type="tns:registerResult"/>
+  <xs:element name="statsResult" type="tns:statsResult"/>
+  <xs:complexType name="registerResult">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="Malformed" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="Duplicate" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="Bare" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="Ignored" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="certificate">
+    <xs:sequence>
+      <xs:element name="Id" type="xs:int"/>
+      <xs:element minOccurs="0" name="CommonName" type="xs:string"/>
+      <xs:element minOccurs="0" name="OrganizationName" type="xs:string"/>
+      <xs:element minOccurs="0" name="OrganizationUnit" type="xs:string"/>
+      <xs:element minOccurs="0" name="PublicKeyAlgorithm" type="xs:string"/>
+      <xs:element name="Version" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="statsResult">
+    <xs:sequence>
+      <xs:element name="stats">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" name="key" type="tns:certificate"/>
+                  <xs:element minOccurs="0" name="value" type="xs:int"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IncorrectArgumentException" type="tns:IncorrectArgumentException"/>
+  <xs:complexType name="IncorrectArgumentException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="argument" type="xs:anyType"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TLDNotRegisteredException" type="tns:TLDNotRegisteredException"/>
+  <xs:complexType name="TLDNotRegisteredException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="tld" type="xs:string"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MalformedURLException" type="tns:MalformedURLException"/>
+  <xs:complexType name="MalformedURLException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SiteNotRegisteredException" type="tns:SiteNotRegisteredException"/>
+  <xs:complexType name="SiteNotRegisteredException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="site" type="xs:string"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
