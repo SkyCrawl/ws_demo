@@ -2,15 +2,20 @@
 
 ## SOAP
 
-Ajta krajta... kolik toho musím číst? Téměř doživotní záruka, že se člověk nebude nikdy nudit. :+1: 
+<http://en.wikipedia.org/wiki/List_of_web_service_specifications>
+
+Ouch... to se vážně nemám už nikdy v životě nudit?
 
 ### CXF
 
-Rozhodně lepší než Axis. V zásadě funguje dobře, ale obsahuje bugy a nezabývá se detaily. Typická známka příliš rychle se rozvíjejícího projektu nebo nesprávně vedeného projektu...
+Rozhodně lepší než Axis. V zásadě funguje dobře, ale obsahuje bugy a nezabývá se detaily. Typická známka příliš rychle se rozvíjejícího nebo nesprávně vedeného projektu...
 
 #### Co se mi líbí
 
 Poměrně dobře podporuje konverzi výjimek na SOAP fault zprávy. Na druhou stranu nefunguje přenastavení jména XML elementu, na který se výjimka konvertuje...
+
+Detaily:  
+<https://www.google.cz/search?q=xf+maven&ie=utf-8&oe=utf-8&gws_rd=cr&ei=6HpGVerrC5LfaIXBgbgD#q=cxf+maven+generate>
 
 #### Problémy
 
@@ -56,6 +61,46 @@ Proto se velmi vyplatí převést projekt na Maven a používat na veškerou man
 ## REST
 
 Je vcelku jednoduchý a přímočarý. Jediný "problém" je nejspíš (alespoň pro Javu) v nalezení dobrého klienta. Možností je několik:
-* TODO
 
+1. [Unirest](http://unirest.io/java.html)
+	* Vypadá z nich asi nejlépe - nádherný deklarativní styl a vše potřebné. Používá ovšem knihovnu `Apache HTTPComponents`, která koliduje s CXF... Jojo, tak to bývá :(.
+2. [Restfulie](https://github.com/caelum/restfulie-java)
+	* Nějaké takové trochu divné (špatná dokumentace), ale dá se a po Unirestu je to asi druhá volba, přestože nemá tolik možností...
+3. [http-rest-client](https://github.com/g00dnatur3/http-rest-client)
+	* Vypadá docela dobře (podobně jako Unirest), podporuje ovšem pouze JSON. Dokáže-li někdo hezky přidat XML, mohl by být i lepší než Restfulie.
+4. [Restlet](http://restlet.com/)
+	* Těžká tonáž nejvyššího kalibru... Šíleně robustní, ale určitě i velmi dobrý framework.
+5. [JAX-RS Client API](http://cxf.apache.org/docs/jax-rs-client-api.html)
+	* Nějaké takové divné a nemastné neslané...
+6. [RESTEasy](http://docs.jboss.org/resteasy/docs/3.0.9.Final/userguide/html_single/index.html#RESTEasy_Client_Framework) (nadstavba nad JAX-RS)
+	* Už o něco lepší než JAX-RS, nicméně pořád tak nějak "divně robustní"...
+7. [Jersey](http://www.javacodegeeks.com/2012/09/simple-rest-client-in-java.html)
+	* Nejsem si jist, ale vypadá jako nadstavba JAX-RS a opět o něco "lepší", přestože to pořád ještě není "ono".
+8. [java.net](http://www.mkyong.com/webservices/jax-rs/restfull-java-client-with-java-net-url/) (vlastní low-level implementace)
+	* Občas by se možná mohlo hodit...
+
+## Javou vzhůru k šíleným zítřkům
+
+Používá-li člověk spousty externích knihoven (nebo kupříkladu jen dvě větší), může narazit na spoustu problémů a občas by možná bylo i lepší uchýlit se místo jejich řešení do cvokhausu!
+
+### Konfliktní dependence
+
+Jinými slovy, je-li nějaká knihovna vyžadována několikrát v různých verzích... Noční můra pro všechny, kteří mají podivné problémy a nejsou schopni je vygooglit nebo vyřešit.
+
+Vzbudíte-li se i vy do noční můry, možná vám světlým bodem na obzoru následující:
+<http://www.javaworld.com/article/2077837/java-se/hello--osgi--part-1--bundles-for-beginners.html>
+
+### Různé logovací systémy
+
+Jednou je "hardkódován" standardní logovací modul Javy, podruhé se spoléhá na SLF4J a do třetice všeho ukecávajícího je nám servírován LOG4J. A to vše, prosím, v různých verzích! Jinak je to přece o ničem. :+1: 
+
+## Užitečné poznámky a odkazy
+
+* <http://en.wikipedia.org/wiki/List_of_web_service_frameworks>
+	* chybí ovšem nové dynamické jazyky, které začínají také hodně fušovat do webových aplikací (třeba Python a Ruby)
+* http://en.wikipedia.org/wiki/Universal_Description_Discovery_and_Integration
+	* pokud vyvíjíte business službu
+* kromě WS probíraných/zmiňovaných na přednášce:
+	* <http://en.wikipedia.org/wiki/JSON-WSP>
+	* <http://en.wikipedia.org/wiki/Common_Object_Request_Broker_Architecture>
 
