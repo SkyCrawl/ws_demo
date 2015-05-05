@@ -79,6 +79,8 @@ Je vcelku jednoduchý a přímočarý. Jediný "problém" je nejspíš (alespoň
 8. [java.net](http://www.mkyong.com/webservices/jax-rs/restfull-java-client-with-java-net-url/) (vlastní low-level implementace)
 	* Občas by se možná mohlo hodit...
 
+**Pravděpodobně by bylo rychlejší, příjemnější a lepší, abychom na hodinách místo curl zkoušeli REST pomocí jUnit testů, kde bude použit jeden z výše uvedených frameworků :).**
+
 ## Javou vzhůru k šíleným zítřkům
 
 Používá-li člověk spousty externích knihoven (nebo kupříkladu jen dvě větší), může narazit na spoustu problémů a občas by možná bylo i lepší uchýlit se místo jejich řešení do cvokhausu!
@@ -90,9 +92,39 @@ Jinými slovy, je-li nějaká knihovna vyžadována několikrát v různých ver
 Vzbudíte-li se i vy do noční můry, možná vám bude světlým bodem na obzoru následující:
 <http://www.javaworld.com/article/2077837/java-se/hello--osgi--part-1--bundles-for-beginners.html>
 
-### Různé logovací systémy
+## Různé logovací systémy
 
 Jednou je "hardkódován" standardní logovací modul Javy, podruhé se spoléhá na SLF4J a do třetice všeho ukecávajícího je nám servírován Log4j. A pokud možno, v různých verzích, prosím... jinak je přece život o ničem! :+1: 
+
+## Bonbonek nakonec
+
+Vzdálené nasazení na [koding.com](https://koding.com) pomocí Eclipse a Ant buildfile: `remote.xml`.
+
+Procedura (hlavní body):
+
+1. Vytvořit účet na koding.
+2. Připravit koding:
+	```
+	kpm install tomcat
+	sudo apt-get install tomcat7-admin
+
+	# INFO: http://#{vaše-vm}.koding.io:8080/
+	# toto přidat do "./conf/tomcat-users.xml":
+	# <role rolename="manager-script"/>
+	# <user username="ant" password="vaše-heslo" roles="manager-script"/>
+	```
+3. Vygenerovat `ws_demo.war` do složky `build`.
+4. Zbytek je popsán přímo v `remote.xml`.
+
+Jakmile je všechno připraveno a nainstalováno, stačí pro opětovné nasazení pouze:
+
+1. Vygenerovat `ws_demo.war` do složky `build`.
+2. Spustit vytvořenou "run konfiguraci" pro `remote.xml`.
+
+Celý proces (kromě instalace) by šlo samozřejmě přepracovat do Mavenu, leč bylo by to trochu složitější a musel by se i trochu přepracovat projekt, včetně dependencí. Chvilku by to trvalo, ale pak by člověk měl jednotné rozhraní na všechno, včetně správy projektu a pak by nastala Nirvana v podobě nezávislosti na Eclipse :).
+
+Nasazení na Heroku (PaaS) by mělo být dokonce ještě jednodušší než nasazení na "generický server s Tomcatem":
+<https://www.youtube.com/watch?v=6gYDLFVI07A>
 
 ## Užitečné poznámky a odkazy
 

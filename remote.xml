@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="ws_demo" basedir="." default="deploy">
+	<!--
+		This buildfile has mostly been taken from:
+		https://tomcat.apache.org/tomcat-7.0-doc/manager-howto.html#Executing_Manager_Commands_With_Ant
+		
+  		Requirements:
+  			1. A ${warfile} file in the build directory (see below).
+  				Solution: use "File->Export->Web->WAR file" in Eclipse!
+  			2. Some Tomcat libraries included in the used Ant's home.
+  				Solution: use "Eclipse->Settings->Ant->Runtime->Ant Home Entries (default)->Add External JARs" in Eclipse to add the following libraries:
+  				- ./lib/catalina-ant.jar
+  				- ./lib/tomcat-coyote.jar
+  				- ./lib/tomcat-util.jar
+  				- ./bin/tomcat-juli.jar
+  				NOTE: doesn't have to be the same Tomcat version as on the remote server, AS LONG AS THE MAJOR VERSION IS THE SAME (e.g. Tomcat 7)!
+  			3. An account on the remote Tomcat (in "./conf/tomcat-users.xml"):
+  				<role rolename="manager-script"/>
+  				<user username="${remote-username}" password="${password}" roles="manager-script"/>
+  		Usage:
+  			1. Right-click on this file in Eclipse->Run As->External Tools Configuration.
+  			2. Ant Build->New
+  			3. Put this into arguments: "-Dpassword=your-remote-password"
+  		Notes:
+  			- https://ant.apache.org/manual/Tasks/war.html
+  			- http://mojo.codehaus.org/tomcat-maven-plugin/introduction.html
+	-->
+
+	<!-- Configure context paths and files for tasks -->
+  	<property name="project-name" value="ws_demo"/>
+  	<property name="buildpath" value="build"/>
+  	<property name="warfile" value="${buildpath}/${project-name}.war"/>
+
+  	<!-- Configure remote access to Tomcat Manager -->
+  	<property name="remote-url"      value="http://skycrawl.koding.io:8080/manager/text"/>
+  	<property name="remote-username" value="ant"/>
+  	<property name="remote-contextpath" value="/${project-name}"/>
+
+  	<!-- Configure the custom Ant tasks for the Manager application -->
+  	<taskdef name="deploy"    classname="org.apache.catalina.ant.DeployTask"/>
+  	<taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask"/>
+  	<taskdef name="reload"    classname="org.apache.catalina.ant.ReloadTask"/>
+  	<taskdef name="start"     classname="org.apache.catalina.ant.StartTask"/>
+  	<taskdef name="stop"      classname="org.apache.catalina.ant.StopTask"/>
+  	<!--
+  		<taskdef name="list"      classname="org.apache.catalina.ant.ListTask"/>
+  		<taskdef name="resources" classname="org.apache.catalina.ant.ResourcesTask"/>
+  		<typedef name="sessions"  classname="org.apache.catalina.ant.SessionsTask"/>
+  		<taskdef name="findleaks" classname="org.apache.catalina.ant.FindLeaksTask"/>
+  		<typedef name="vminfo"    classname="org.apache.catalina.ant.VminfoTask"/>
+  		<typedef name="threaddump" classname="org.apache.catalina.ant.ThreaddumpTask"/>
+  	-->
+  	
+  	<!-- Executable Targets -->
+  	<target name="deploy" description="Install web application">
+    	<deploy url="${remote-url}" username="${remote-username}" password="${password}" path="${remote-contextpath}" war="${warfile}"/>
+  	</target>
+  	<target name="undeploy" description="Remove web application">
+    	<undeploy url="${remote-url}" username="${remote-username}" password="${password}" path="${remote-contextpath}"/>
+  	</target>
+  	<target name="reload" description="Reload web application">
+    	<reload url="${remote-url}" username="${remote-username}" password="${password}" path="${remote-contextpath}"/>
+  	</target>
+
+</project>
