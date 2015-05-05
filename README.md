@@ -135,4 +135,5 @@ Nasazení na Heroku (PaaS) by mělo být dokonce ještě jednodušší než nasa
 * kromě WS probíraných/zmiňovaných na přednášce:
 	* <http://en.wikipedia.org/wiki/JSON-WSP>
 	* <http://en.wikipedia.org/wiki/Common_Object_Request_Broker_Architecture>
-
+* Nevíte, kam svojí webovou službu strčit? Tohle by vám mohlo pomoci:
+	* <http://www.paasify.it/vendors>
