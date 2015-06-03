@@ -138,10 +138,10 @@ Nasazení na Heroku (PaaS) by mělo být dokonce ještě jednodušší než nasa
 * Konkrétní služba (i zdarma), nicméně horší kvality: <http://www.ipinfodb.com/>
 * Konkrétní služba (i zdarma), lepší kvality: <http://ip-api.com/docs/api:xml>	
 
+**Počasí:**
+* Dobrý seznámek, zdá se: <http://stackoverflow.com/questions/8446360/which-weather-data-web-services-do-you-know>
 
 ## Užitečné poznámky a odkazy
-
-
 
 * <http://en.wikipedia.org/wiki/List_of_web_service_frameworks>
 	* chybí ovšem nové dynamické jazyky, které začínají také hodně fušovat do webových aplikací (třeba Python a Ruby)
