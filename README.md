@@ -126,7 +126,22 @@ Celý proces (kromě instalace) by šlo samozřejmě přepracovat do Mavenu, le�
 Nasazení na Heroku (PaaS) by mělo být dokonce ještě jednodušší než nasazení na "generický server s Tomcatem":
 <https://www.youtube.com/watch?v=6gYDLFVI07A>
 
+## Ready-to-use externí webové služby
+
+**Pakly:**
+* CDYNE (placené): <https://www.cdyne.com/>
+* Bing Maps (zdarma v jistém rozmezí): <https://msdn.microsoft.com/en-us/library/dd877956.aspx>
+
+**IP geolokace:**
+* Jakýsi seznam: <http://www.programmableweb.com/news/61-geolocation-apis-panoramio-google-gears-and-yahoo/2012/03/14>
+* Jakýsi druhý seznam zdarma: <http://www.programmableweb.com/news/7-free-geocoding-apis-google-bing-yahoo-and-mapquest/2012/06/21>
+* Konkrétní služba (i zdarma), nicméně horší kvality: <http://www.ipinfodb.com/>
+* Konkrétní služba (i zdarma), lepší kvality: <http://ip-api.com/docs/api:xml>	
+
+
 ## Užitečné poznámky a odkazy
+
+
 
 * <http://en.wikipedia.org/wiki/List_of_web_service_frameworks>
 	* chybí ovšem nové dynamické jazyky, které začínají také hodně fušovat do webových aplikací (třeba Python a Ruby)
