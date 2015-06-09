@@ -60,7 +60,11 @@ Proto se velmi vyplatí převést projekt na Maven a používat na veškerou man
 
 ## REST
 
-Je vcelku jednoduchý a přímočarý. Jediný "problém" je nejspíš (alespoň pro Javu) v nalezení dobrého klienta. Možností je několik:
+Je vcelku jednoduchý a přímočarý. Jediný "problém" je nejspíš (alespoň pro Javu) v nalezení dobrého klienta:
+
+### Klienti
+
+Možností je několik:
 
 1. [Unirest](http://unirest.io/java.html)
 	* Vypadá z nich asi nejlépe - nádherný deklarativní styl a vše potřebné. Používá ovšem knihovnu `Apache HTTPComponents`, která koliduje s CXF a to tak, že absolutně nesmiřitelně! Jojo, tak to bývá :(.
@@ -81,6 +85,66 @@ Je vcelku jednoduchý a přímočarý. Jediný "problém" je nejspíš (alespoň
 
 **Pravděpodobně by bylo rychlejší, příjemnější a lepší, abychom na hodinách místo curl zkoušeli REST pomocí jUnit testů, kde bude použit jeden z výše uvedených frameworků :).**
 
+### Jersey, Tomcat, Dependency management system
+
+Myslím, že pohodlnější inkludování Jersey do projektů by bylo skrze DMS, např. Ivy/Maven.
+
+Chceme-li použít Ivy, musíme nainstalovat příslušný plugin (`Apache IvyDE`). Otevřete si v Eclipse MarketPlace a hledejte `ivy`. Příklad pro Ivy (`ivy.xml`):
+
+```
+<?xml version="1.0"?>
+<!DOCTYPE ivy-module [
+	<!ENTITY jersey.version "1.19">
+]>
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+	<info organisation="org.skycrawl" module="ws_demo" />
+	<configurations>
+		<conf name="default" />
+	</configurations>
+	<dependencies defaultconf="default" defaultconfmapping="default->default">
+	
+		<!-- REST RUNTIME (SERVER) -->
+		<dependency org="com.sun.jersey" name="jersey-server" rev="&jersey.version;" />
+		<dependency org="com.sun.jersey" name="jersey-servlet" rev="&jersey.version;" />
+		<dependency org="com.sun.jersey" name="jersey-core" rev="&jersey.version;" />
+		<dependency org="javax.ws.rs" name="jsr311-api" rev="1.1.1" />
+	
+		<!-- MISCELLANEOUS (SERVER) -->
+    	<dependency org="com.google.guava" name="guava" rev="18.0" />
+		
+	</dependencies>
+</ivy-module>
+```
+
+Tento soubor je třeba doplnit souborem `ivysettings.xml`:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<ivysettings>
+	<settings defaultResolver="default" />
+	<resolvers>
+		<chain name="default">
+			<!-- Public Maven repository -->
+			<ibiblio name="public" m2compatible="true" />
+		</chain>
+	</resolvers>
+
+</ivysettings>
+```
+
+Nyní může Ivy stahovat dependence přímo z [Maven Central Repository](http://search.maven.org/), kde se dají snadno vyhledávat. Podobně by bylo dobré nainkludovat REST klienta a JUnit, všechno snadno, pohromadě, připraveno k využití a nezávisle na IDE (NetBeans, Eclipse, IntelliJ, ...).
+
+Pak:
+* Stačí přidat shromážděné knihovny (classpath entry `Ivy`) do `deployment assembly` v projektu Eclipse.
+* Bude aktualizace Jersey typicky velmi triviální - stačí změnit danou XML entitu navrchu příkladu. JSR se bude muset měnit jen velmi zřídka a to, když aktualizujeme na novější verzi JAX-RS.
+
+V Mavenu by to vypadalo velmi podobně :).
+
+**POZNÁMKA:** připojil jsem i odkaz na Guavu od Googlu, protože obsahuje užitečnou třídu `MediaType`, kde je definováno mnoho mime typů pro webové aplikace.
+
+
+
+
 ## Javou vzhůru k šíleným zítřkům
 
 Používá-li člověk spousty externích knihoven (nebo kupříkladu jen dvě větší), může narazit na spoustu problémů a občas by možná bylo i lepší uchýlit se místo jejich řešení do cvokhausu!
@@ -92,9 +156,12 @@ Jinými slovy, je-li nějaká knihovna vyžadována několikrát v různých ver
 Vzbudíte-li se i vy do noční můry, možná vám bude světlým bodem na obzoru následující:
 <http://www.javaworld.com/article/2077837/java-se/hello--osgi--part-1--bundles-for-beginners.html>
 
-## Různé logovací systémy
+### Různé logovací systémy
 
 Jednou je "hardkódován" standardní logovací modul Javy, podruhé se spoléhá na SLF4J a do třetice všeho ukecávajícího je nám servírován Log4j. A pokud možno, v různých verzích, prosím... jinak je přece život o ničem! :+1: 
+
+
+
 
 ## Bonbonek nakonec
 
@@ -126,6 +193,10 @@ Celý proces (kromě instalace) by šlo samozřejmě přepracovat do Mavenu, le�
 Nasazení na Heroku (PaaS) by mělo být dokonce ještě jednodušší než nasazení na "generický server s Tomcatem":
 <https://www.youtube.com/watch?v=6gYDLFVI07A>
 
+
+
+
+
 ## Ready-to-use externí webové služby
 
 **Pakly:**
@@ -140,6 +211,10 @@ Nasazení na Heroku (PaaS) by mělo být dokonce ještě jednodušší než nasa
 
 **Počasí:**
 * Dobrý seznámek, zdá se: <http://stackoverflow.com/questions/8446360/which-weather-data-web-services-do-you-know>
+
+
+
+
 
 ## Užitečné poznámky a odkazy
 
