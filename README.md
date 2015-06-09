@@ -142,6 +142,107 @@ V Mavenu by to vypadalo velmi podobně :).
 
 **POZNÁMKA:** připojil jsem i odkaz na Guavu od Googlu, protože obsahuje užitečnou třídu `MediaType`, kde je definováno mnoho mime typů pro webové aplikace.
 
+### Vyplatí se vědět
+
+#### Parametry a URL kódování
+
+Zde je parametr `query` automaticky dekódován, než je předán:
+
+```
+@GET
+@Path("...")
+@Consumes("...")
+@Produces("...")
+public String decoded(@QueryParam("...") String query)
+{
+	...
+}
+```
+
+Zde je parametr `query` předán v původním stavu, tak jak dorazil v URL:
+
+```
+@GET
+@Path("...")
+@Consumes("...")
+@Produces("...")
+@Encoded
+public String decoded(@QueryParam("...") String query)
+{
+	...
+}
+```
+
+#### Kódování znaků
+
+Abychom se vyhnuli zbytečnému bolení hlavy, máme-li co dočinění se službami zpracovávajícími speciální znaky nebo jazyky, vždy nastavme například:
+* `Content-Type: text/plain; charset=UTF-8`
+* `Accept: text/html; charset=UTF-8`
+
+Servery s oblibou odmítají zpracovávat requesty (`400 - Bad Request`), najdou-li znak, který nezná jakási jejich defaultní znaková sada, nejčastěji pravděpodobně ISO-8859-1. A to se prosím netýká URL, nýbrž `Request Body` (`Content`)!
+
+Vícero souvisejícího počteníčka např. pro Tomcat:  
+<http://wiki.apache.org/tomcat/FAQ/CharacterEncoding>
+
+#### Enkódovaná lomítka
+
+Servlet containery často nepovolují enkódovaná lomítka (`%2F`) v URL cestě - requesty končí chybou `400 - Bad Request`. Volání přes parametry tedy funguje (např. `search?search=%2F`), kdežto volání přes cestu nefunguje (např. `/search/%2F`)...
+
+Zatím jsem pouze používal Jersey, takže nevím jak jsou na tom ostatní běhová prostředí pro JAX-RS. Jersey nicméně tvrdí, že oni nic... že všechno servlet containery a "špatná" JAX-RS specifikace :). Detaily:
+* <https://java.net/jira/browse/JERSEY-649>
+* <https://java.net/jira/browse/JERSEY-329>
+
+S problémem jsem se osobně setkal a je poměrně zapeklitý, minimálně v kombinaci:
+* Tomcat v7.0.62
+* Jersey v1.19
+
+Nefungovalo žádné z doporučených řešení:
+* `System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");`
+* <http://stackoverflow.com/questions/2291428/jax-rs-pathparam-how-to-pass-a-string-with-slashes-hyphens-equals-too>
+
+Nezkoušel jsem nastavit parametr z prvního bodu jako JVM argument, protože člověk nemá vždycky možnost tyhle věci ovlivnit a navíc potom tohle nastavení ovlivňuje VŠECHNO (aplikace, servlety, služby, ...), což také nemusí být žádoucí. Přecejen to tam je z dobrého důvodu :).
+
+Jestliže selže vše ostatní, prakticky nezbývá než se vyhnout použití enkódovaných lomítek v cestách, a to:
+* změnou návrhu aplikace tak, abychom je vůbec nemuseli použít,
+* změnou návrhu aplikace, abychom je používali pouze v URL parametrech nebo `Request Body`.
+
+URL parametry demonstruje například tento tutoriál:  
+<http://docs.oracle.com/cd/E19776-01/820-4867/6nga7f5np/index.html>
+
+**POZNÁMKA: všimněte si také anotace `@DefaultValue`.**
+
+Request body lze nahlédnout například tady:  
+<http://stackoverflow.com/questions/1725315/how-to-get-full-rest-request-body-using-jersey>
+
+**POZNÁMKA: všimněte si také, že je použit POST. Věc se má tak, že HTTP GET requesty sice můžou mít tělo, nicméně některé webové/aplikační servery je mohou vesele ignorovat poněvadž jim nepřikládají sémantickou hodnotu. A pozor... na to samé může člověk narazit i u knihoven! Důkaz, že nekecám:**
+
+```
+$.ajax({
+	method: "GET",
+		headers:
+		{
+			"Content-Type": "text/plain; charset=UTF-8",
+		    "Accept": "text/html; charset=UTF-8"
+		},
+		url: "./myService",
+		processData: false,
+		data: query,
+		success: function(responseHtml, textStatus, jqXHR)
+		{
+			...
+		},
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+			...
+		}
+	});
+	
+=> myService?{query}
+```
+
+Nahradíme-li `GET` za `POST`, budeme žasnout nad rozdílem :). Zkoušeno na jQuery v2.1.4.
+
+
 
 
 
@@ -159,6 +260,24 @@ Vzbudíte-li se i vy do noční můry, možná vám bude světlým bodem na obzo
 ### Různé logovací systémy
 
 Jednou je "hardkódován" standardní logovací modul Javy, podruhé se spoléhá na SLF4J a do třetice všeho ukecávajícího je nám servírován Log4j. A pokud možno, v různých verzích, prosím... jinak je přece život o ničem! :+1: 
+
+
+
+
+## Ready-to-use externí webové služby
+
+**Pakly:**
+* CDYNE (placené): <https://www.cdyne.com/>
+* Bing Maps (zdarma v jistém rozmezí): <https://msdn.microsoft.com/en-us/library/dd877956.aspx>
+
+**IP geolokace:**
+* Jakýsi seznam: <http://www.programmableweb.com/news/61-geolocation-apis-panoramio-google-gears-and-yahoo/2012/03/14>
+* Jakýsi druhý seznam zdarma: <http://www.programmableweb.com/news/7-free-geocoding-apis-google-bing-yahoo-and-mapquest/2012/06/21>
+* Konkrétní služba (i zdarma), nicméně horší kvality: <http://www.ipinfodb.com/>
+* Konkrétní služba (i zdarma), lepší kvality: <http://ip-api.com/docs/api:xml>	
+
+**Počasí:**
+* Dobrý seznámek, zdá se: <http://stackoverflow.com/questions/8446360/which-weather-data-web-services-do-you-know>
 
 
 
@@ -192,25 +311,6 @@ Celý proces (kromě instalace) by šlo samozřejmě přepracovat do Mavenu, le�
 
 Nasazení na Heroku (PaaS) by mělo být dokonce ještě jednodušší než nasazení na "generický server s Tomcatem":
 <https://www.youtube.com/watch?v=6gYDLFVI07A>
-
-
-
-
-
-## Ready-to-use externí webové služby
-
-**Pakly:**
-* CDYNE (placené): <https://www.cdyne.com/>
-* Bing Maps (zdarma v jistém rozmezí): <https://msdn.microsoft.com/en-us/library/dd877956.aspx>
-
-**IP geolokace:**
-* Jakýsi seznam: <http://www.programmableweb.com/news/61-geolocation-apis-panoramio-google-gears-and-yahoo/2012/03/14>
-* Jakýsi druhý seznam zdarma: <http://www.programmableweb.com/news/7-free-geocoding-apis-google-bing-yahoo-and-mapquest/2012/06/21>
-* Konkrétní služba (i zdarma), nicméně horší kvality: <http://www.ipinfodb.com/>
-* Konkrétní služba (i zdarma), lepší kvality: <http://ip-api.com/docs/api:xml>	
-
-**Počasí:**
-* Dobrý seznámek, zdá se: <http://stackoverflow.com/questions/8446360/which-weather-data-web-services-do-you-know>
 
 
 
