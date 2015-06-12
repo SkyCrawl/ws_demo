@@ -1,3 +1,7 @@
+# Něco málo o tomto projektu (obvyklá nuda)
+
+[Click here](./docs/project.md).
+
 # Zkušenosti
 
 ## SOAP
